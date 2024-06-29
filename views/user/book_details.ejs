@@ -1,0 +1,104 @@
+<%- include('../layout/user_header') %>
+<link rel="stylesheet" href="/css/popular_books.css">
+<style>
+  .book-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+  }
+  .book-image {
+    margin-right: 30px;
+  }
+  .book-details {
+    max-width: 600px;
+  }
+  .book-details table {
+    width: 100%;
+  }
+  .book-details td {
+    padding: 8px;
+  }
+  .add-to-cart {
+    margin-top: 20px;
+  }
+ 
+</style>
+
+<center>
+  <h3>Book Details</h3>
+
+  <div class="book-container container mt-4">
+    <div class="book-image">
+      <img
+        src="/img/<%= book.bookDetails.book_img %>"
+        alt="<%= book.bookDetails.book_name %>"
+        width="200"
+      />
+    </div>
+    <div class="book-details">
+      <table>
+        <tr>
+          <td>Book Id:</td>
+          <td><%= book.bookDetails.book_id %></td>
+        </tr>
+        <tr>
+          <td>Title:</td>
+          <td><%= book.bookDetails.book_name %></td>
+        </tr>
+        <tr>
+          <td>Author:</td>
+          <td><%= book.bookDetails.book_author %></td>
+        </tr>
+        <tr>
+            <td>Category:</td>
+            <td><%= book.bookDetails.book_category %></td>
+          </tr>
+        <tr>
+          <td>Description:</td>
+          <td><%= book.bookDetails.book_desc %></td>
+        </tr>
+        <tr>
+          <td>Price:</td>
+          <td>$<%= book.bookDetails.book_price %></td>
+        </tr>
+        <tr>
+          <td>Quantity:</td>
+          <td><%= book.bookDetails.book_quantity %></td>
+        </tr>
+      </table>
+      <div class="add-to-cart">
+        <button class="btn btn-info" onclick="addToCart('<%= book.bookDetails.book_id %>')">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section id="related-books-container" class="popular-books-container container">
+    <h3>Books Related To - <%= book.bookDetails.book_category %></h3>
+    <% if (booksInSameCategory && booksInSameCategory.length > 0) { %>
+        <div class="card-deck">
+            <% booksInSameCategory.forEach(book => { %>
+                <div class="card">
+                    <img src="/img/<%= book.book_img %>" class="card-img-top" alt="<%= book.book_name %>">
+                    <div class="card-body">
+                        <h5 class="card-title" id="<%= book.book_name %>"><%= book.book_name %></h5>
+                        <p class="card-text"><strong>Author:</strong> <%= book.book_author %></p>
+                        <p class="card-text"><strong>Category:</strong> <%= book.book_category %></p>
+                        <p class="card-text"><strong>Price:</strong> $<%= book.book_price %></p>
+                        <p class="card-text"><strong>Quantity:</strong> <%= book.book_quantity %></p>
+                        <p class="card-text"><strong>Purchases:</strong> <%= book.book_purchase %></p>
+                        <button class="btn btn-info" onclick="viewBook('<%= book.book_id %>')">View</button>
+                        <button class="btn btn-info" onclick="addToCart('<%= book.book_id %>')">Add to Cart</button>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <p>No related books available at the moment.</p>
+    <% } %>
+  </section>
+</center>
+<script src="/js/index.js"></script>
+<%- include('../layout/user_footer') %>

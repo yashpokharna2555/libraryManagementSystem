@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/496b9c5c00.js" crossorigin="anonymous"></script>
+    <title>Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: url('/img/home.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+        #h1{
+            height: 25%;
+            width: 50%;
+            background-color: rgba(0, 0, 0, 0.741);
+            margin-bottom: 30px;
+            border-radius: 8px;
+            margin-top: 7%;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            margin-bottom: 50px;
+            font-size: 320%;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            gap: 40px;
+        }
+        .box {
+            background: rgba(244, 222, 32, 0.8);
+            border-radius: 15px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .box:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        }
+        .box i {
+            font-size: 5em; /* Adjust the size of the icons here */
+            margin-bottom: 20px;
+        }
+        button {
+            background: rgba(0, 123, 255, 0.6);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            color: white;
+        }
+        button:hover {
+            background: rgba(0, 123, 255, 0.8);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="h1">
+        <h1>Welcome to the Online Library Management System</h1>
+    </div>
+    <div class="container">
+        <div class="box">
+            <i class="fa-solid fa-user"></i>
+            <button onclick="window.location.href='/user/register'">User</button>
+        </div>
+        <div class="box">
+            <i class="fa-solid fa-user-tie"></i>
+            <button onclick="window.location.href='/admin/adminLogin'">Admin</button>
+        </div>
+    </div>
+</body>
+</html>

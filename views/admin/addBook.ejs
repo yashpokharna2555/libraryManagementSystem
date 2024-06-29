@@ -1,0 +1,484 @@
+<%- include('../layout/header') %>
+<style>
+  body {
+    font-family: "Arial", sans-serif;
+    padding: 20px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .mb-4 {
+    margin-bottom: 20px;
+  }
+
+  .table {
+    margin-top: 20px;
+  }
+
+  .pagination {
+    margin-top: 20px;
+  }
+
+  .modal .modal-dialog {
+    max-width: 800px;
+  }
+
+  .modal .modal-header {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .modal .modal-body {
+    padding: 20px;
+  }
+</style>
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<!-- Button to toggle the add book form -->
+<button id="addBookBtn" class="btn btn-primary mb-4">Add Book</button>
+
+<!-- Form to add a new book (initially hidden) -->
+<div id="addBookForm" class="card p-4 mb-4" style="display: none">
+  <h2>Add New Book</h2>
+  <form action="/admin/addBook" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="title">Book Name:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        name="title"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category:</label>
+      <select class="form-control" id="category" name="category" required>
+        <option value="Action">Action</option>
+              <option value="Crime">Crime</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Science & Technology">Science & Technology</option>
+              <option value="Horror">Horror</option>
+              <option value="Thriller">Thriller</option>
+              <option value="Romance">Romance</option>
+              <option value="Fiction">Fiction</option>
+              <option value="Young Adult">Young Adult</option>
+              <option value="Education">Education</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="author">Author:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="author"
+        name="author"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea
+        class="form-control"
+        id="description"
+        name="description"
+        required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="image">Image:</label>
+      <input
+        type="file"
+        class="form-control-file"
+        id="image"
+        name="image"
+        accept="image/*"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price:</label>
+      <input
+        type="number"
+        class="form-control"
+        id="price"
+        name="price"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="quantity">Quantity:</label>
+      <input
+        type="number"
+        class="form-control"
+        id="quantity"
+        name="quantity"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn btn-success">Add Book</button>
+  </form>
+</div>
+
+<!-- Modal for updating a book -->
+<div
+  class="modal fade"
+  id="updateBookModal"
+  tabindex="-1"
+  aria-labelledby="updateBookModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateBookModalLabel">Update Book</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="updateForm" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="updateTitle">Book Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="updateTitle"
+              name="title"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="updateCategory">Category:</label>
+            <select
+              class="form-control"
+              id="updateCategory"
+              name="category"
+              required
+            >
+              <option value="Action">Action</option>
+              <option value="Crime">Crime</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Science & Technology">Science & Technology</option>
+              <option value="Horror">Horror</option>
+              <option value="Thriller">Thriller</option>
+              <option value="Romance">Romance</option>
+              <option value="Fiction">Fiction</option>
+              <option value="Young Adult">Young Adult</option>
+              <option value="Education">Education</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="updateAuthor">Author:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="updateAuthor"
+              name="author"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="updateDescription">Description:</label>
+            <textarea
+              class="form-control"
+              id="updateDescription"
+              name="description"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="updateImage">Image:</label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="updateImage"
+              name="image"
+              accept="image/*"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="updatePrice">Price:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="updatePrice"
+              name="price"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="updateQuantity">Quantity:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="updateQuantity"
+              name="quantity"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary">Update Book</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Table to display all books -->
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Title</th>
+      <th>Category</th>
+      <th>Author</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="bookList">
+    <% books.slice(0, 100).forEach(book => { %>
+    <tr>
+      <td>
+        <img
+          src="/img/<%= book.book_img %>"
+          alt=""
+          style="width: 100px; height: 150px"
+        />
+      </td>
+      <td><%= book.book_name %></td>
+      <td><%= book.book_category %></td>
+      <td><%= book.book_author %></td>
+      <td>
+        <span class="short-desc"
+          ><%= book.book_desc.split(' ').slice(0, 4).join(' ') %></span
+        >
+        <span class="long-desc" style="display: none"
+          ><%= book.book_desc %></span
+        >
+        <button class="btn btn-link read-more">Read more</button>
+      </td>
+      <td><%= book.book_price %></td>
+      <td><%= book.book_quantity %></td>
+      <td>
+        <button class="btn btn-info" onclick="editBook('<%= book.book_id %>')">
+          Edit
+        </button>
+        <button
+          class="btn btn-danger"
+          onclick="deleteBook('<%= book.book_id %>')"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+
+<!-- <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <% for (let i = 0; i < Math.ceil(books.length / 10); i++) { %>
+            <li class="page-item <%= i === 0 ? 'active' : '' %>">
+                <a class="page-link" href="#" onclick="loadPage('<%= i %>')"><%= i + 1 %></a>
+            </li>
+        <% } %>
+    </ul>
+</nav> -->
+<!-- <nav aria-label="...">
+    <ul class="pagination">
+      <li class="page-item disabled">
+        <a class="page-link">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item active" aria-current="page">
+        <a class="page-link" href="#">2</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav> -->
+<%- include('../layout/footer') %>
+
+<script>
+  const books = "<%= JSON.stringify(books) %>";
+  document.getElementById("addBookBtn").addEventListener("click", function () {
+    var form = document.getElementById("addBookForm");
+    form.style.display = form.style.display === "none" ? "block" : "none";
+  });
+
+  function editBook(bookId) {
+    console.log("In edit book ");
+    fetch(`/admin/getBookDetails/${bookId}`)
+      .then((response) => response.json())
+      .then((book) => {
+        // Populate the update form fields with book details
+        document.getElementById("updateTitle").value = book.book_name;
+        document.getElementById("updateCategory").value = book.book_category;
+        document.getElementById("updateAuthor").value = book.book_author;
+        document.getElementById("updateDescription").value = book.book_desc;
+        document.getElementById("updatePrice").value = book.book_price;
+        document.getElementById("updateQuantity").value = book.book_quantity;
+
+        // Set the form action
+        var updateForm = document.getElementById("updateForm");
+        updateForm.action = `/admin/updateBook/${bookId}`;
+
+        // Show the modal
+        $("#updateBookModal").modal("show");
+      })
+      .catch((error) => console.error("Error fetching book details:", error));
+  }
+
+  function deleteBook(bookId) {
+    fetch(`/admin/deleteBook/${bookId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete book");
+        }
+        console.log("Book deleted successfully");
+        location.reload(); // Reload the page to update the book list
+      })
+      .catch((error) => console.error("Error deleting book:", error));
+  }
+//   function loadPage(page) {
+//     const booksPerPage = 100;
+//     const start = page * booksPerPage;
+//     const end = start + booksPerPage;
+//     const paginatedBooks = JSON.parse(books).slice(start, end);
+
+//     const bookList = document.getElementById("bookList");
+//     bookList.innerHTML = "";
+
+//     paginatedBooks.forEach((book) => {
+//       const row = `
+//             <tr>
+//                 <td><img src="/img/${
+//                   book.book_img
+//                 }" alt="" style="width: 100px; height: 150px;"></td>
+//                 <td>${book.book_name}</td>
+//                 <td>${book.book_category}</td>
+//                 <td>${book.book_author}</td>
+//                 <td>
+//                     <span class="short-desc">${book.book_desc
+//                       .split(" ")
+//                       .slice(0, 4)
+//                       .join(" ")}</span>
+//                     <span class="long-desc" style="display: none;">${
+//                       book.book_desc
+//                     }</span>
+//                     <button class="btn btn-link read-more">Read more</button>
+//                 </td>
+//                 <td>${book.book_price}</td>
+//                 <td>${book.book_quantity}</td>
+//                 <td>
+//                     <button class="btn btn-info" onclick="editBook('${
+//                       book.book_id
+//                     }')">Edit</button>
+//                     <button class="btn btn-danger" onclick="deleteBook('${
+//                       book.book_id
+//                     }')">Delete</button>
+//                 </td>
+//             </tr>
+//         `;
+//       bookList.innerHTML += row;
+//     });
+
+//     // Update pagination
+//     updatePagination(page);
+//   }
+
+//   function updatePagination(currentPage) {
+//     const totalPages = Math.ceil(JSON.parse(books).length / 10);
+//     const pagination = document.querySelector(".pagination");
+
+//     // Clear existing pagination links
+//     pagination.innerHTML = "";
+
+//     // Add Previous button
+//     const previousButton = `
+//         <li class="page-item ${currentPage === 0 ? "disabled" : ""}">
+//             <a class="page-link" href="#" onclick="loadPage(${
+//               currentPage - 1
+//             })">Previous</a>
+//         </li>
+//     `;
+//     pagination.innerHTML += previousButton;
+
+//     // Add page numbers
+//     for (let i = 0; i < totalPages; i++) {
+//       const pageLink = `
+//             <li class="page-item ${currentPage === i ? "active" : ""}">
+//                 <a class="page-link" href="#" onclick="loadPage(${i})">${
+//         i + 1
+//       }</a>
+//             </li>
+//         `;
+//       pagination.innerHTML += pageLink;
+//     }
+
+//     // Add Next button
+//     const nextButton = `
+//         <li class="page-item ${
+//           currentPage === totalPages - 1 ? "disabled" : ""
+//         }">
+//             <a class="page-link" href="#" onclick="loadPage(${
+//               currentPage + 1
+//             })">Next</a>
+//         </li>
+//     `;
+//     pagination.innerHTML += nextButton;
+//   }
+
+  document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("read-more")) {
+      const shortDesc =
+        event.target.previousElementSibling.previousElementSibling;
+      const longDesc = event.target.previousElementSibling;
+      if (longDesc.style.display === "none") {
+        shortDesc.style.display = "none";
+        longDesc.style.display = "block";
+        event.target.textContent = "Read less";
+      } else {
+        shortDesc.style.display = "block";
+        longDesc.style.display = "none";
+        event.target.textContent = "Read more";
+      }
+    }
+  });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

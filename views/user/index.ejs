@@ -1,0 +1,58 @@
+<%- include('../layout/user_header') %>
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/popular_books.css">
+
+<div id="message"></div> 
+<div class="container mt-4">
+    <div class="slider-container">
+        <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/img/home1.jpg" class="d-block w-100" alt="Library 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="/img/home2.jpg" class="d-block w-100" alt="Library 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="/img/home3.jpg" class="d-block w-100" alt="Library 3">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="popular-books-container">
+        <center><h3>Popular Books</h3></center>
+        <% if (books && books.length > 0) { %>
+            <div class="card-deck">
+                <% books.forEach(book => { %>
+                    <div class="card">
+                        <img src="/img/<%= book.book_img %>" class="card-img-top" alt="<%= book.book_name %>">
+                        <div class="card-body">
+                            <h5 class="card-title" id="<%= book.book_name %>"><%= book.book_name %></h5>
+                            <p class="card-text"><strong>Author:</strong> <%= book.book_author %></p>
+                            <p class="card-text"><strong>Category:</strong> <%= book.book_category %></p>
+                            <p class="card-text"><strong>Price:</strong> $<%= book.book_price %></p>
+                            <p class="card-text"><strong>Quantity:</strong> <%= book.book_quantity %></p>
+                            <p class="card-text"><strong>Purchases:</strong> <%= book.book_purchase %></p>
+                            <button class="btn btn-info" onclick="viewBook('<%= book.book_id %>')">View</button>
+                            <button class="btn btn-info" onclick="addToCart('<%= book.book_id %>', '<%= book.book_name %>')">Add to Cart</button>
+
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <p>No popular books available at the moment.</p>
+        <% } %>
+    </div>
+</div>
+<script src="/js/index.js"></script>
+<%- include('../layout/user_footer') %>

@@ -1,0 +1,40 @@
+<%- include('../layout/header') %>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Orders for User: <%= user.name %></h1>
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Order ID</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (orders.length == 0) { %>
+                <tr>
+                    <td colspan="7" class="text-center">No Orders for this user</td>
+                </tr>
+            <% } else { %>
+                <% orders.forEach(order => { %>
+                    <tr>
+                        <td><%= order.user_id %></td>
+                        <td><%= order.order_details %></td>
+                        <td><%= order.order_quantity %></td>
+                        <td><%= order.order_price %></td>
+                        <td><%= order.order_email %></td>
+                        <td><%= order.order_phone %></td>
+                        <td><%= order.order_date %></td>
+                    </tr>
+                <% }); %>
+            <% } %>
+        </tbody>
+    </table>
+    <button class="btn btn-primary mt-4" onclick="window.history.back()">Back to User List</button>
+</div>
+
+<%- include('../layout/footer') %>

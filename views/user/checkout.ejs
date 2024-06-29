@@ -1,0 +1,159 @@
+<%- include('../layout/user_header') %>
+
+<div class="container mt-4">
+    <h2>Checkout</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <h4>Order Summary</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Book</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let totalBooks = 0; let totalPrice = 0; %>
+                    <% if (cart.length > 0) { %>
+                        <% cart.forEach(item => { %>
+                            <% totalBooks += item.bookDetails.quantity; %>
+                            <% totalPrice += item.bookDetails.book_price * item.bookDetails.quantity; %>
+                            <tr>
+                                <td><%= item.bookDetails.book_name %></td>
+                                <td><%= item.bookDetails.book_author %></td>
+                                <td>₹<%= item.bookDetails.book_price %></td>
+                                <td><%= item.bookDetails.quantity %></td>
+                                <td>₹<%= item.bookDetails.book_price * item.bookDetails.quantity %></td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="5">No items in the cart.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+                <% if (cart.length > 0) { %>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3">Total</th>
+                            <th><%= totalBooks %></th>
+                            <th>₹<%= totalPrice %></th>
+                        </tr>
+                    </tfoot>
+                <% } %>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <h4>User Details</h4>
+            <form id="checkoutForm" method="POST" action="/user/pay">
+                <div class="form-group">
+                    <label for="userName">Name</label>
+                    <input type="text" class="form-control" id="userName" name="userName" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" class="form-control" id="userEmail" name="userEmail" value="<%= user.email %>" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="userPhone">Phone Number</label>
+                    <input type="text" class="form-control" id="userPhone" name="userPhone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="userAddress">Address</label>
+                    <input type="text" class="form-control" id="userAddress" name="userAddress" placeholder="Enter your address" required>
+                </div>
+                <div class="form-group">
+                    <label for="userCity">City</label>
+                    <input type="text" class="form-control" id="userCity" name="userCity" placeholder="Enter your city" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPostalCode">Postal Code</label>
+                    <input type="text" class="form-control" id="userPostalCode" name="userPostalCode" placeholder="Enter your postal code" required>
+                </div>
+                <h4>Payment Details</h4>
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number" required>
+                </div>
+                <div class="form-group">
+                    <label for="cardExpiry">Expiration Date</label>
+                    <input type="text" class="form-control" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                    <label for="cardCvv">CVV</label>
+                    <input type="text" class="form-control" id="cardCvv" name="cardCvv" placeholder="CVV" required>
+                </div>
+                <div class="form-group">
+                    <label for="otp">OTP</label>
+                    <input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP" required>
+                </div>
+                <button type="button" class="btn btn-secondary mt-3" onclick="sendOtp()">Send OTP</button>
+                <button type="submit" class="btn btn-primary mt-3">Pay</button>
+                <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+                    Payment successful!
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/js/index.js"></script>
+<%- include('../layout/user_footer') %>
+
+<script>
+    function sendOtp() {
+        const phoneNumber = document.getElementById('userPhone').value;
+        if (phoneNumber) {
+            fetch('/user/send-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ phoneNumber })
+            }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    alert('OTP sent to your phone number');
+                } else {
+                    alert('Failed to send OTP');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            alert('Please enter your phone number');
+        }
+    }
+
+    document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        // const formData = new FormData(this);
+        fetch('/user/pay', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        userName: document.getElementById('userName').value,
+        userPhone: document.getElementById('userPhone').value,
+        userEmail: document.getElementById('userEmail').value,
+        userAddress: document.getElementById('userAddress').value,
+        userCity: document.getElementById('userCity').value,
+        userPostalCode: document.getElementById('userPostalCode').value,
+        cardNumber: document.getElementById('cardNumber').value,
+        cardExpiry: document.getElementById('cardExpiry').value,
+        cardCvv: document.getElementById('cardCvv').value,
+        otp: document.getElementById('otp').value
+    })
+}).then(response => response.json()).then(data => {
+    if (data.success) {
+        document.getElementById('successMessage').style.display = 'block';
+    } else {
+        alert('Payment failed: ' + data.message);
+    }
+}).catch(error => {
+    console.error('Error:', error);
+});
+    });
+</script>

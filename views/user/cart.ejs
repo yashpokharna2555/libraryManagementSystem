@@ -1,0 +1,64 @@
+<%- include('../layout/user_header') %>
+<link rel="stylesheet" href="/css/styles.css">
+
+<div class="container">
+    <h3>Your Cart</h3>
+    <div id="message"></div>
+    <div id="cart">
+        <% if (cart && cart.length > 0) { %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Book</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let totalAmount = 0; %>
+                    <% cart.forEach(item => { %>
+                        <% 
+                            let bookPrice = parseFloat(item.bookDetails.book_price);
+                            if (isNaN(bookPrice)) {
+                                console.error('Invalid price for item:', item.bookDetails);
+                                bookPrice = 0;
+                            }
+                            let itemTotal = bookPrice * item.bookDetails.quantity;
+                            totalAmount += itemTotal; 
+                        %>
+                        <tr>
+                            <td><img src="/img/<%= item.bookDetails.book_img %>" alt="" style="width: 100px; height: 150px;"></td>
+                            <td><%= item.bookDetails.book_name %></td>
+                            <td><%= item.bookDetails.book_author %></td>
+                            <td>₹<%= bookPrice.toFixed(2) %></td>
+                            <td>
+                                <button class="btn btn-light" onclick="updateQuantity('<%= item.bookDetails.book_id %>', '<%= item.bookDetails.book_name %>', 'decrease')">-</button>
+                                <%= item.bookDetails.quantity %>
+                                <button class="btn btn-light" onclick="updateQuantity('<%= item.bookDetails.book_id %>', '<%= item.bookDetails.book_name %>', 'increase')">+</button>
+                            </td>
+                            <td>₹<%= itemTotal.toFixed(2) %></td>
+                            <td>
+                                <button class="btn btn-danger" onclick="removeFromCart('<%= item.bookDetails.book_id %>')">Remove</button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <div class="text-right">
+                <h4>Total: ₹<%= totalAmount.toFixed(2) %></h4>
+                <button class="btn btn-success" onclick="proceedToPay()">Proceed to Pay</button>
+            </div>
+        <% } else { %>
+            <div class="alert alert-warning" role="alert">
+                Your cart is empty.
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<script src="/js/index.js"></script>
+<%- include('../layout/user_footer') %>

@@ -1,0 +1,64 @@
+.carousel-inner img {
+    height: 500px; /* Adjust this value as needed */
+    width: 100%; /* Ensure images fill the width of the container */
+    object-fit: cover; /* Ensure the image covers the entire area */
+}
+
+.popular-books-container {
+    margin-top: 40px;
+}
+
+.card-deck {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.card {
+    flex: 1 0 30%; /* Makes each card take up roughly 30% of the container, adjusting for gaps */
+    max-width: 30%; /* Ensures no single card takes more space than 30% */
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-10px); /* Slightly elevate the card on hover */
+}
+
+.card img {
+    height: 250px; /* Adjust image height to fit the card well */
+    object-fit: cover; /* Ensure the image covers the entire area */
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 1200px) {
+    .card {
+        flex: 1 0 45%; /* Adjust for medium screens */
+        max-width: 45%; /* Ensures no single card takes more space than 45% */
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        flex: 1 0 100%; /* Adjust for small screens */
+        max-width: 100%; /* Ensures no single card takes more space than 100% */
+    }
+}
